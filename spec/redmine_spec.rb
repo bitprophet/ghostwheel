@@ -12,21 +12,21 @@ describe Redmine do
     Nokogiri.stub!(:HTML).and_return(mock('doc', :css => value))
   end
 
-  describe "test_ticket_uri" do
+  describe "ticket_subject" do
     it "should return nil on HTTPError" do
       err = OpenURI::HTTPError.new '404', nil
       OpenURI.stub!(:open_http).and_raise(err)
-      test_ticket_uri("#{@base_uri}/NaN").should be_nil
+      ticket_subject("#{@base_uri}/NaN").should be_nil
     end
 
     it "should return nil if HTML parsing didn't find an issue subject" do
       parsed_via_css([])
-      test_ticket_uri('http://www.google.com').should be_nil
+      ticket_subject('http://www.google.com').should be_nil
     end
 
-    it "should return an issue subject if one was found" do
+    it "should return subject if one was found" do
       parsed_via_css([mock('subject', :content => "subject yay")])
-      test_ticket_uri("#{@base_uri}/7").should_not be_nil
+      ticket_subject("#{@base_uri}/7").should_not be_nil
     end
   end
 end

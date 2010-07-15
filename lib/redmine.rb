@@ -3,7 +3,7 @@ require 'open-uri'
 
 
 module Redmine
-  def test_ticket_uri(uri)
+  def ticket_subject(uri)
     begin
       doc = Nokogiri::HTML(open(uri))
     rescue OpenURI::HTTPError
