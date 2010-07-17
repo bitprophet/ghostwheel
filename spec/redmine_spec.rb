@@ -3,6 +3,7 @@ require 'lib/redmine'
 describe Redmine do
   include Redmine
 
+
   before do
     @base_uri = 'http://code.fabfile.org/issues/show'
   end
@@ -11,6 +12,7 @@ describe Redmine do
     OpenURI.stub!(:open_http)
     Nokogiri.stub!(:HTML).and_return(mock('doc', :css => value))
   end
+
 
   describe "ticket_subject" do
     it "should return nil on HTTPError" do
