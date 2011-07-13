@@ -2,8 +2,32 @@ require 'rubygems'
 require 'logger'
 
 require 'isaac'
+require 'trollop'
 
 require 'lib/redmine'
+
+
+#
+# Option parsing
+#
+
+opts = Trollop::options do
+  opt :channels,
+    "Comma-separated list of channels to join (#s optional)",
+    :default => "fabfile"
+  opt :nick,
+    "Bot nickname",
+    :default => 'Ghostwheel'
+end
+
+opts[:channels] = opts[:channels].split(",").map {|x|
+  (x =~ /^#/) ? x : "\##{x}"
+}
+
+
+#
+# Bot configuration
+#
 
 include Redmine
 
@@ -13,12 +37,12 @@ logger = Logger.new logfile
 
 
 configure do |c|
-  c.nick = 'Ghostwheel'
+  c.nick = opts[:nick]
   c.server = 'irc.freenode.net'
 end
 
 on :connect do
-  join '#fabfile', '#fabric'
+  join *opts[:channels]
   logger.info "#" * 20
   logger.info "Connected!"
 end

@@ -7,7 +7,7 @@ module Redmine
     begin
       doc = Nokogiri::HTML(open(uri))
     rescue OpenURI::HTTPError
-      nil 
+      nil # Just return nil if ticket URL doesn't exist
     else
       header = doc.css('div.issue h3')
       header[0].content unless header.empty?
